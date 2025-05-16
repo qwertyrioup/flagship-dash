@@ -68,14 +68,18 @@ export function AutoCheckerForm({ suppliers }: AutoCheckerFormProps) {
     const response = await fetch("/api/auto-checker-catalog-number", {
       method: "POST",
       body: form,
+      headers: {
+        'Accept': 'application/json',
+      },
+      credentials: 'include'
     });
 
-    const result = await response.json();
-
     if (!response.ok) {
-      throw new Error(result.error || "Failed to upload file");
+      const errorData = await response.json().catch(() => ({ error: 'Failed to parse error response' }));
+      throw new Error(errorData.error || "Failed to upload file");
     }
 
+    const result = await response.json();
     return result.tempFilePath;
   }, []);
 

@@ -851,7 +851,25 @@ export async function GET(request: NextRequest) {
   });
 }
 
+export async function OPTIONS() {
+  return new Response(null, {
+    status: 204,
+    headers: {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Accept',
+      'Access-Control-Allow-Credentials': 'true',
+      'Access-Control-Max-Age': '86400'
+    }
+  });
+}
+
 export async function POST(request: NextRequest) {
+  // Handle CORS preflight
+  if (request.method === 'OPTIONS') {
+    return OPTIONS();
+  }
+
   await connectToDatabase()
   
   try {
@@ -863,14 +881,26 @@ export async function POST(request: NextRequest) {
     if (!file) {
       return new Response(JSON.stringify({ error: "No file provided" }), {
         status: 400,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Accept',
+          'Access-Control-Allow-Credentials': 'true'
+        }
       });
     }
 
     if (!supplierId) {
       return new Response(JSON.stringify({ error: "No supplier ID provided" }), {
         status: 400,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Accept',
+          'Access-Control-Allow-Credentials': 'true'
+        }
       });
     }
 
@@ -879,7 +909,13 @@ export async function POST(request: NextRequest) {
     if (!supplier) {
       return new Response(JSON.stringify({ error: "Supplier not found" }), {
         status: 404,
-        headers: { 'Content-Type': 'application/json' }
+        headers: { 
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type, Accept',
+          'Access-Control-Allow-Credentials': 'true'
+        }
       });
     }
 
@@ -899,8 +935,9 @@ export async function POST(request: NextRequest) {
       headers: { 
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type'
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Accept',
+        'Access-Control-Allow-Credentials': 'true'
       }
     });
 
@@ -913,21 +950,10 @@ export async function POST(request: NextRequest) {
       headers: { 
         'Content-Type': 'application/json',
         'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type'
+        'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Accept',
+        'Access-Control-Allow-Credentials': 'true'
       }
     });
   }
-}
-
-// Add OPTIONS handler for CORS preflight requests
-export async function OPTIONS() {
-  return new Response(null, {
-    status: 204,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'POST, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type'
-    }
-  });
 } 
