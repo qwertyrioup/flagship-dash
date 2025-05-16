@@ -1,0 +1,25 @@
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "@typescript-eslint/no-explicit-any": "warn",
+    "@typescript-eslint/no-unused-vars": "warn",
+    "prefer-const": "warn"
+  },
+  "overrides": [
+    {
+      "files": [
+        "./app/api/auto-checker-catalog-number/route.ts",
+        "./app/dashboard/products/auto-checker-catalog-number/auto-checker-form.tsx",
+        "./app/dashboard/products/auto-checker-catalog-number/terminal-dialog.tsx",
+        "./lib/generator-utilities.ts",
+        "./lib/metadata-utils.ts",
+        "./lib/utils/hash_generator.ts"
+      ],
+      "rules": {
+        "@typescript-eslint/no-explicit-any": "off",
+        "@typescript-eslint/no-unused-vars": "off",
+        "prefer-const": "off"
+      }
+    }
+  ]
+}
